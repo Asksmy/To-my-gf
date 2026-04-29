@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaxia para ti</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            background: #0a0015;
+        }
+
+        #galaxy-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            perspective: 1000px;
+        }
+
+        #background-stars {
+            position: absolute;
+            width: 200%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(138, 43, 226, 0.1), transparent 50%);
+        }
+
+        .bg-star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: moveLeft 60s linear infinite;
+        }
+
+        @keyframes moveLeft {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(-50vw);
+            }
+        }
+
+        #center-sphere {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle at 30% 30%, #4a148c, #1a0033);
+            border-radius: 50%;
+            box-shadow: 
+                0 0 80px rgba(138, 43, 226, 1),
+                0 0 120px rgba(138, 43, 226, 0.6),
+                0 0 160px rgba(138, 43, 226, 0.4),
+                inset 0 0 40px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 
+                    0 0 80px rgba(138, 43, 226, 1),
+                    0 0 120px rgba(138, 43, 226, 0.6),
+                    0 0 160px rgba(138, 43, 226, 0.4),
+                    inset 0 0 40px rgba(0, 0, 0, 0.5);
+            }
+            50% {
+                box-shadow: 
+                    0 0 100px rgba(138, 43, 226, 1),
+                    0 0 140px rgba(138, 43, 226, 0.8),
+                    0 0 180px rgba(138, 43, 226, 0.6),
+                    inset 0 0 40px rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        #heart {
+            font-size: 60px;
+            color: white;
+            text-shadow: 
+                0 0 20px rgba(255, 255, 255, 1),
+                0 0 40px rgba(255, 105, 180, 0.8),
+                0 0 60px rgba(255, 105, 180, 0.6);
+            animation: heartBeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            25% {
+                transform: scale(1.1);
+            }
+            50% {
+                transform: scale(1);
+            }
+            75% {
+                transform: scale(1.05);
+            }
+        }
+
+        #rotating-stars {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-style: preserve-3d;
+            animation: rotateRight 120s linear infinite;
+        }
+
+        @keyframes rotateRight {
+            from {
+                transform: rotateZ(0deg);
+            }
+            to {
+                transform: rotateZ(360deg);
+            }
+        }
+
+        .star-with-phrase {
+            position: absolute;
+            transform-origin: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .star-with-phrase:hover {
+            transform: scale(1.2);
+        }
+
+        .star-point {
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 1;
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            }
+            50% {
+                opacity: 0.5;
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+            }
+        }
+
+        .phrase {
+            position: absolute;
+            left: 20px;
+            top: -8px;
+            color: white;
+            font-size: 14px;
+            white-space: nowrap;
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.8);
+            opacity: 0.9;
+            pointer-events: none;
+        }
+
+        #music-control {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            background: rgba(138, 43, 226, 0.3);
+            padding: 15px 30px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #music-control:hover {
+            background: rgba(138, 43, 226, 0.5);
+            transform: translateX(-50%) scale(1.05);
+        }
+
+        #music-icon {
+            font-size: 24px;
+        }
+
+        #music-text {
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .shooting-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8);
+            animation: shoot 3s linear;
+        }
+
+        @keyframes shoot {
+            0% {
+                transform: translate(0, 0) rotate(-45deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-300px, 300px) rotate(-45deg);
+                opacity: 0;
+            }
+        }
+
+        #title {
+            position: fixed;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 32px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            text-shadow: 0 0 20px rgba(138, 43, 226, 0.8);
+            z-index: 100;
+            animation: fadeInTitle 2s ease-in-out;
+        }
+
+        @keyframes fadeInTitle {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="galaxy-container">
+        <div id="background-stars"></div>
+        <div id="rotating-stars"></div>
+        <div id="center-sphere">
+            <div id="heart">🤍</div>
+        </div>
+    </div>
+
+    <div id="title">Te amo mucho mi niña, Luisa 🤍</div>
+
+    <div id="music-control">
+        <div id="music-icon">🎵</div>
+        <div id="music-text">Click para reproducir música</div>
+    </div>
+
+    <script>
+        // Frases románticas
+        const phrases = [
+            "Te Amo ❤️",
+            "Eres mi Estrella 💫",
+            "Te Amo Infinitamente ∞",
+            "Mi Corazón Late por Ti 💓",
+            "Eres mi Todo 🌟",
+            "Te Amo Muchísimo 😘",
+            "Eres mi Universo 🌌",
+            "Mi Amor Eterno 💖",
+            "Eres mi Sol ☀️",
+            "Te Adoro 💕",
+            "Mi Vida Eres Tú 🌹",
+            "Eres Única 👑",
+            "Te Amo Más Cada Día 📈",
+            "Mi Tesoro 💎",
+            "Eres mi Cielo 🌈",
+            "Te Amo por Siempre ⏰",
+            "Mi Amor Verdadero 💝",
+            "Eres mi Felicidad 😊",
+            "Te Necesito 🤗",
+            "Mi Reina 👸"
+        ];
+
+        // Crear estrellas de fondo
+        const bgStarsContainer = document.getElementById('background-stars');
+        for (let i = 0; i < 200; i++) {
+            const star = document.createElement('div');
+            star.className = 'bg-star';
+            star.style.width = Math.random() * 3 + 1 + 'px';
+            star.style.height = star.style.width;
+            star.style.left = Math.random() * 200 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 60 + 's';
+            star.style.animationDuration = (Math.random() * 40 + 40) + 's';
+            bgStarsContainer.appendChild(star);
+        }
+
+        // Crear estrellas rotativas con frases
+        const rotatingStarsContainer = document.getElementById('rotating-stars');
+        const numStars = 20;
+        const radius = 400;
+
+        for (let i = 0; i < numStars; i++) {
+            const angle = (i / numStars) * Math.PI * 2;
+            const x = Math.cos(angle) * radius;
+            const y = Math.sin(angle) * radius;
+
+            const starContainer = document.createElement('div');
+            starContainer.className = 'star-with-phrase';
+            starContainer.style.left = x + 'px';
+            starContainer.style.top = y + 'px';
+
+            const star = document.createElement('div');
+            star.className = 'star-point';
+            star.style.animationDelay = Math.random() * 3 + 's';
+
+            const phrase = document.createElement('div');
+            phrase.className = 'phrase';
+            phrase.textContent = phrases[i % phrases.length];
+
+            starContainer.appendChild(star);
+            starContainer.appendChild(phrase);
+            rotatingStarsContainer.appendChild(starContainer);
+        }
+
+        // Estrellas fugaces
+        function createShootingStar() {
+            const star = document.createElement('div');
+            star.className = 'shooting-star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 50 + '%';
+            document.getElementById('galaxy-container').appendChild(star);
+
+            setTimeout(() => {
+                star.remove();
+            }, 3000);
+        }
+
+        setInterval(createShootingStar, 4000);
+
+        // Sistema de audio con Web Audio API
+        let audioContext;
+        let oscillator;
+        let gainNode;
+        let isPlaying = false;
+
+        // Notas de piano para una melodía romántica suave
+        const melodyNotes = [
+            { freq: 261.63, duration: 1.5 },  // C4
+            { freq: 329.63, duration: 1.0 },  // E4
+            { freq: 392.00, duration: 1.5 },  // G4
+            { freq: 329.63, duration: 1.0 },  // E4
+            { freq: 293.66, duration: 2.0 },  // D4
+            { freq: 261.63, duration: 1.0 },  // C4
+            { freq: 293.66, duration: 1.5 },  // D4
+            { freq: 329.63, duration: 1.0 },  // E4
+            { freq: 349.23, duration: 2.0 },  // F4
+            { freq: 329.63, duration: 1.5 },  // E4
+            { freq: 293.66, duration: 1.0 },  // D4
+            { freq: 261.63, duration: 2.0 },  // C4
+        ];
+
+        let currentNoteIndex = 0;
+
+        function playNote(frequency, duration, startTime) {
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            
+            osc.frequency.value = frequency;
+            osc.type = 'sine';
+            
+            // Envelope ADSR suave
+            gain.gain.setValueAtTime(0, startTime);
+            gain.gain.linearRampToValueAtTime(0.15, startTime + 0.1);
+            gain.gain.linearRampToValueAtTime(0.1, startTime + duration - 0.2);
+            gain.gain.linearRampToValueAtTime(0, startTime + duration);
+            
+            osc.start(startTime);
+            osc.stop(startTime + duration);
+        }
+
+        function playMelody() {
+            let currentTime = audioContext.currentTime;
+            
+            for (let i = 0; i < melodyNotes.length; i++) {
+                const note = melodyNotes[i];
+                playNote(note.freq, note.duration, currentTime);
+                currentTime += note.duration;
+            }
+            
+            // Repetir la melodía
+            const totalDuration = melodyNotes.reduce((sum, note) => sum + note.duration, 0);
+            setTimeout(() => {
+                if (isPlaying) playMelody();
+            }, totalDuration * 1000);
+        }
+
+        function toggleMusic() {
+            const musicText = document.getElementById('music-text');
+            const musicIcon = document.getElementById('music-icon');
+            
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            
+            if (!isPlaying) {
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+                playMelody();
+                isPlaying = true;
+                musicText.textContent = 'Música Reproduciendo ♪';
+                musicIcon.textContent = '🎹';
+            } else {
+                audioContext.suspend();
+                isPlaying = false;
+                musicText.textContent = 'Click para reproducir música';
+                musicIcon.textContent = '🎵';
+            }
+        }
+
+        document.getElementById('music-control').addEventListener('click', toggleMusic);
+
+        // Efecto de hover en estrellas
+        document.querySelectorAll('.star-with-phrase').forEach(star => {
+            star.addEventListener('mouseenter', function() {
+                this.style.zIndex = '1000';
+                const phrase = this.querySelector('.phrase');
+                phrase.style.fontSize = '16px';
+                phrase.style.textShadow = '0 0 20px rgba(138, 43, 226, 1)';
+            });
+            
+            star.addEventListener('mouseleave', function() {
+                this.style.zIndex = '1';
+                const phrase = this.querySelector('.phrase');
+                phrase.style.fontSize = '14px';
+                phrase.style.textShadow = '0 0 10px rgba(138, 43, 226, 0.8)';
+            });
+        });
+    </script>
+</body>
+</html>

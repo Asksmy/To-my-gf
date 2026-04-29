@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Para Luisa 💜</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #06000f;
+      --purple-deep: #1a0035;
+      --purple-mid: #5b1fa3;
+      --purple-glow: #9b3dff;
+      --purple-light: #c77dff;
+      --stardust: #e0c3fc;
+      --gold: #f4c97a;
+      --white: #ffffff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    #starfield {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .nebula {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.18;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .nebula-1 { width: 600px; height: 600px; background: #7b2fff; top: -100px; left: -200px; }
+    .nebula-2 { width: 500px; height: 500px; background: #ff2faa; bottom: 10%; right: -150px; }
+    .nebula-3 { width: 400px; height: 400px; background: #2f5fff; bottom: 30%; left: 20%; }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .hero-eyebrow {
+      font-style: italic;
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      color: var(--purple-light);
+      letter-spacing: 0.3em;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 0.3s;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem, 12vw, 8rem);
+      font-weight: 700;
+      line-height: 1;
+      background: linear-gradient(135deg, #e0c3fc 0%, #9b3dff 45%, #f4c97a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 0.6s;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.35rem);
+      font-style: italic;
+      color: var(--stardust);
+      max-width: 500px;
+      line-height: 1.9;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 0.9s;
+    }
+
+    .scroll-hint {
+      margin-top: 3.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 1.4s;
+      color: var(--purple-light);
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+    }
+    .scroll-hint .line {
+      width: 1px;
+      height: 55px;
+      background: linear-gradient(to bottom, transparent, var(--purple-glow));
+      animation: linePulse 2s ease-in-out infinite;
+    }
+    @keyframes linePulse {
+      0%, 100% { opacity: 0.5; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.15); }
+    }
+
+    /* ── PASILLO ── */
+    #hallway {
+      position: relative;
+      z-index: 10;
+      padding: 4rem 1.5rem 6rem;
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4.5rem;
+    }
+
+    .card-wrapper {
+      opacity: 0;
+      transform: translateY(60px);
+      transition: opacity 0.85s ease, transform 0.85s ease;
+    }
+    .card-wrapper.visible { opacity: 1; transform: translateY(0); }
+
+    .card {
+      position: relative;
+      background: linear-gradient(145deg, rgba(91,31,163,0.14), rgba(6,0,15,0.85));
+      border: 1px solid rgba(155,61,255,0.22);
+      border-radius: 24px;
+      padding: 3rem 3.5rem 3rem;
+      backdrop-filter: blur(14px);
+      overflow: hidden;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    .card:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 24px 64px rgba(155,61,255,0.22);
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at top left, rgba(155,61,255,0.07), transparent 55%);
+      pointer-events: none;
+    }
+
+    .card-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 7rem;
+      font-weight: 700;
+      color: rgba(155,61,255,0.1);
+      position: absolute;
+      top: -1.5rem;
+      right: 2rem;
+      line-height: 1;
+      user-select: none;
+    }
+
+    .card-icon {
+      font-size: 2.6rem;
+      margin-bottom: 1rem;
+      display: block;
+      filter: drop-shadow(0 0 14px rgba(155,61,255,0.55));
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-weight: 400;
+      color: var(--purple-light);
+      margin-bottom: 1.4rem;
+      line-height: 1.25;
+    }
+
+    .card-body {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      font-weight: 300;
+      line-height: 2;
+      color: rgba(224,195,252,0.88);
+    }
+    .card-body em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    /* separador */
+    .star-sep {
+      text-align: center;
+      font-size: 1rem;
+      color: rgba(155,61,255,0.45);
+      letter-spacing: 1.8rem;
+      opacity: 0;
+      transition: opacity 0.9s ease;
+    }
+    .star-sep.visible { opacity: 1; }
+
+    /* ── PORTAL ── */
+    #portal {
+      position: relative;
+      z-index: 10;
+      min-height: 55vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem 7rem;
+      gap: 2.5rem;
+    }
+
+    .portal-tagline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+      font-style: italic;
+      color: var(--stardust);
+      max-width: 520px;
+      line-height: 1.75;
+      opacity: 0;
+      transition: opacity 0.9s ease, transform 0.9s ease;
+      transform: translateY(24px);
+    }
+    .portal-tagline.visible { opacity: 1; transform: translateY(0); }
+
+    .portal-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.25rem 3rem;
+      background: linear-gradient(135deg, rgba(155,61,255,0.28), rgba(91,31,163,0.38));
+      border: 1.5px solid rgba(155,61,255,0.55);
+      border-radius: 100px;
+      color: var(--white);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      backdrop-filter: blur(10px);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity 0.9s ease 0.3s, transform 0.9s ease 0.3s, box-shadow 0.4s ease;
+      transform: translateY(24px);
+    }
+    .portal-btn.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .portal-btn:hover {
+      box-shadow: 0 0 48px rgba(155,61,255,0.5), 0 0 90px rgba(155,61,255,0.18);
+      border-color: rgba(199,125,255,0.85);
+      transform: scale(1.04);
+    }
+    .portal-btn .icon {
+      font-size: 1.6rem;
+      animation: floatIcon 3s ease-in-out infinite;
+    }
+    @keyframes floatIcon {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .firma {
+      font-style: italic;
+      font-size: 1rem;
+      color: rgba(155,61,255,0.6);
+      opacity: 0;
+      transition: opacity 0.9s ease 0.6s;
+    }
+    .firma.visible { opacity: 1; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* partículas */
+    .particle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 1;
+      border-radius: 50%;
+      animation: rise linear infinite;
+    }
+    @keyframes rise {
+      0%   { transform: translateY(110vh) rotate(0deg);   opacity: 0; }
+      8%   { opacity: 0.8; }
+      90%  { opacity: 0.4; }
+      100% { transform: translateY(-10vh) rotate(540deg); opacity: 0; }
+    }
+
+    @media (max-width: 600px) {
+      .card { padding: 2rem 1.6rem; }
+      .card-number { font-size: 4.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="starfield"></canvas>
+  <div class="nebula nebula-1"></div>
+  <div class="nebula nebula-2"></div>
+  <div class="nebula nebula-3"></div>
+
+  <!-- HERO -->
+  <section id="hero">
+    <p class="hero-eyebrow">✦ una carta del universo para ti ✦</p>
+    <h1 class="hero-title">Para Luisa</h1>
+    <p class="hero-subtitle">Hay cosas que no puedo mantener en secreto… pero y quiero contártelas todas.</p>
+    <div class="scroll-hint">
+      <span>Desplázate suavemente</span>
+      <div class="line"></div>
+    </div>
+  </section>
+
+  <!-- PASILLO DE CARTITAS -->
+  <section id="hallway">
+
+    <div class="card-wrapper">
+      <div class="card">
+        <span class="card-number">01</span>
+        <span class="card-icon">🌸</span>
+        <h2 class="card-title">Lo que me enamora de ti</h2>
+        <p class="card-body">
+          Me enamoras con cada pequeño detalle que ni siquiera notas. La forma en que ríes, esa risa que no puedes controlar y que me hace querer detener el tiempo. <em>Tu mirada que dice más que mil palabras.</em> La manera en que ves el mundo con esa ternura tan tuya. Me enamoro de ti cada día, como si fuera la primera vez que hablamos, como si fuese ese momento en el que tamto empecé a adorarte, o hasta el que llegué a amarte.
+        </p>
+      </div>
+    </div>
+
+    <div class="star-sep">✦ ✦ ✦</div>
+
+    <div class="card-wrapper">
+      <div class="card">
+        <span class="card-number">02</span>
+        <span class="card-icon">💌</span>
+        <h2 class="card-title">Una carta de amor</h2>
+        <p class="card-body">
+          Mi Luisa hermosa,<br><br>
+          Si las estrellas tuvieran un nombre, todas tendrían el tuyo. Desde que llegaste a mi vida, cada día tiene más color, más luz y más sentido. Escribirte es fácil porque todo lo que siento por ti es <em>enorme, real y completamente verdadero</em>. Eres la historia más bonita que me ha pasado y la que deseo seguir siempre escribiendo .
+          <br><br>
+          Con todo mi amor,<br>
+          <em>Steven 💜</em>
+        </p>
+      </div>
+    </div>
+
+    <div class="star-sep">✦ ✦ ✦</div>
+
+    <div class="card-wrapper">
+      <div class="card">
+        <span class="card-number">03</span>
+        <span class="card-icon">🌌</span>
+        <h2 class="card-title">Cuánto significas para mí</h2>
+        <p class="card-body">
+          ¿Ves ese cielo lleno de estrellas? Ni todas ellas juntas podrían medir lo que significas para mí. Eres mi calma cuando todo es ruido. Eres mi hogar cuando me siento perdido. <em>Significas todo lo que no sé cómo decir con palabras</em>, pero que siento tan profundo en el pecho que a veces me quedo sin aire solo de pensar en ti.
+        </p>
+      </div>
+    </div>
+
+    <div class="star-sep">✦ ✦ ✦</div>
+
+    <div class="card-wrapper">
+      <div class="card">
+        <span class="card-number">04</span>
+        <span class="card-icon">☀️</span>
+        <h2 class="card-title">Lo que me hace feliz de ti</h2>
+        <p class="card-body">
+          Me hace feliz que existas. Que seas tú, con todo lo que eres. Me alegra cuando me escribes sin razón, solo porque pensaste en mí. Me llena el corazón cuando compartes conmigo tus sueños, tus miedos, tus locuras. <em>Tu presencia sola ya es un regalo</em> — uno que no me canso de recibir nunca.
+        </p>
+      </div>
+    </div>
+
+    <div class="star-sep">✦ ✦ ✦</div>
+
+    <div class="card-wrapper">
+      <div class="card">
+        <span class="card-number">05</span>
+        <span class="card-icon">❤️‍🔥</span>
+        <h2 class="card-title">Por qué te amo</h2>
+        <p class="card-body">
+          Te amo porque eres auténtica. Porque no tienes que fingir nada conmigo y yo tampoco contigo. Te amo por tu fuerza, por tu corazón enorme, por esa forma tan tuya de querer. Te amo <em>porque cuando estoy contigo, el universo entero tiene sentido</em>. Te amo, Luisa. Hoy, mañana y en cada galaxia que exista.
+        </p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- PORTAL AL INDEX -->
+  <section id="portal">
+    <p class="portal-tagline">Y si crees que esto fue bonito… espera a ver lo que el universo guarda para ti.</p>
+    <a href="index.html" class="portal-btn">
+      <span class="icon">🌌</span>
+      <span>Clic acá y verás cómo es mi mundo</span>
+    </a>
+    <p class="firma">— Con amor infinito, Steven 💜</p>
+  </section>
+
+  <script>
+    // ── STARFIELD CANVAS ──
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const stars = Array.from({ length: 230 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      r: Math.random() * 1.6 + 0.3,
+      speed: Math.random() * 0.006 + 0.002,
+      phase: Math.random() * Math.PI * 2
+    }));
+
+    function draw(t) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(s => {
+        const a = 0.25 + 0.75 * Math.abs(Math.sin(t * 0.001 * s.speed * 160 + s.phase));
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(210,170,255,${a})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+
+    // ── PARTÍCULAS ──
+    const colors = ['rgba(155,61,255,0.55)', 'rgba(199,125,255,0.45)', 'rgba(244,201,122,0.35)', 'rgba(255,100,200,0.3)'];
+    for (let i = 0; i < 20; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const sz = Math.random() * 4 + 1.5;
+      p.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}vw;background:${colors[i%4]};animation-duration:${Math.random()*18+14}s;animation-delay:${Math.random()*18}s;filter:blur(${Math.random()*1.5}px)`;
+      document.body.appendChild(p);
+    }
+
+    // ── SCROLL REVEAL ──
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.card-wrapper, .star-sep').forEach(el => io.observe(el));
+
+    const portalIo = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          document.querySelectorAll('.portal-tagline, .portal-btn, .firma').forEach(el => el.classList.add('visible'));
+        }
+      });
+    }, { threshold: 0.2 });
+    portalIo.observe(document.getElementById('portal'));
+
+    // ── SHOOTING STARS ──
+    function shoot() {
+      const el = document.createElement('div');
+      const len = 80 + Math.random() * 80;
+      el.style.cssText = `position:fixed;top:${Math.random()*45}vh;left:${75+Math.random()*25}vw;width:${len}px;height:1px;background:linear-gradient(to left,rgba(255,255,255,0.9),transparent);z-index:2;pointer-events:none;border-radius:1px;transform:rotate(${-15-Math.random()*20}deg);opacity:0;transition:transform 0.9s ease,opacity 0.9s ease`;
+      document.body.appendChild(el);
+      requestAnimationFrame(() => {
+        el.style.opacity = '1';
+        el.style.transform += ' translateX(-55vw)';
+        setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 600); }, 700);
+      });
+    }
+    setInterval(shoot, 5500);
+  </script>
+</body>
+</html>
