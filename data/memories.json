@@ -1,0 +1,151 @@
+{
+    "memories": [
+        {
+            "id": "mem_1",
+            "title": "24 de abril",
+            "emotion": "nostalgia",
+            "worldX": -360,
+            "worldY": -590,
+            "colors": [
+                "#FFD79A",
+                "#FAF9F6"
+            ],
+            "narration": "Entre voleibol, risa y esa forma tuya de existir, algo en mí supo que quería acercarse. Ese día no empezó todo; ese día todo empezó a tener sentido.",
+            "effects": [
+                "constellation_glow",
+                "text_fade_in"
+            ]
+        },
+        {
+            "id": "mem_2",
+            "title": "28 de abril",
+            "emotion": "hopeful",
+            "worldX": 360,
+            "worldY": -590,
+            "colors": [
+                "#98D8C8",
+                "#FAF9F6"
+            ],
+            "narration": "Te hice creer que faltaba mucho. Pero esa noche ya no podía guardar lo que sentía. Fue la primera vez que me declaraba así, porque contigo era imposible sentir a medias.",
+            "effects": [
+                "constellation_glow",
+                "text_fade_in"
+            ]
+        },
+        {
+            "id": "mem_3",
+            "title": "El primer mes",
+            "emotion": "joy",
+            "worldX": 780,
+            "worldY": -130,
+            "colors": [
+                "#FFEAA7",
+                "#FFF5E8"
+            ],
+            "narration": "Lloramos bonito. No de tristeza, sino de esa alegría rara que aparece cuando dos personas entienden que lo suyo no se quedó igual: creció.",
+            "effects": [
+                "constellation_glow",
+                "text_fade_in"
+            ]
+        },
+        {
+            "id": "mem_4",
+            "title": "La primera diferencia",
+            "emotion": "longing",
+            "worldX": 470,
+            "worldY": 560,
+            "colors": [
+                "#FFB0B0",
+                "#FAF9F6"
+            ],
+            "narration": "No fue el recuerdo más dulce, pero fue necesario. Ahí aprendí un poco más de ti, y también aprendí que amar no es irse cuando pesa, sino aprender a quedarse bien.",
+            "effects": [
+                "constellation_glow",
+                "text_fade_in"
+            ]
+        },
+        {
+            "id": "mem_5",
+            "title": "Las dos de la mañana",
+            "emotion": "calm",
+            "worldX": 0,
+            "worldY": 860,
+            "colors": [
+                "#A8C8E8",
+                "#FAF9F6"
+            ],
+            "narration": "Primero estuvieron Ricardo, Roger, el voleibol y las risas. Luego quedamos nosotros. Y cuando pediste estar solo con tu noviecito, entendí cuánto bien nos hace nuestro propio mundo.",
+            "effects": [
+                "constellation_glow",
+                "text_fade_in"
+            ]
+        },
+        {
+            "id": "mem_6",
+            "title": "¿Y qué tiene?",
+            "emotion": "joy",
+            "worldX": -470,
+            "worldY": 560,
+            "colors": [
+                "#FFD79A",
+                "#FAF9F6"
+            ],
+            "narration": "Cuando dices \"¿Y qué tiene?\" para provocarme, algo en mí debería ponerse serio. Pero casi siempre me da ternura. Mi niña siendo mi niña.",
+            "effects": [
+                "constellation_glow",
+                "text_fade_in"
+            ]
+        },
+        {
+            "id": "mem_7",
+            "title": "Diez",
+            "emotion": "hopeful",
+            "worldX": -780,
+            "worldY": -130,
+            "colors": [
+                "#98D8C8",
+                "#FFD79A"
+            ],
+            "narration": "No, 10 hijos. Una respuesta que solo tú y yo conocemos por qué la decimos; una manera tonta, tierna y sobre todo nuestra de decir lo que esperamos a futuro, no de forma literal, pero tampoco asustándolo.",
+            "effects": [
+                "constellation_glow",
+                "text_fade_in"
+            ]
+        }
+    ],
+    "final_letter": [
+        "Para Luisa, mi niña.",
+        "",
+        "A veces siento que nuestra historia no empezó con una gran escena, sino con algo mucho más bonito: una tarde jugando voleibol, una mirada distinta, una conversación que de pronto se sintió necesaria.",
+        "",
+        "El 24 de abril te miré de otra forma. Ya te conocía, pero ese día algo en ti se acercó a una parte de mí que ni yo sabía que estaba esperando. Sentí un encanto difícil de explicar, una conexión que no pidió permiso, y desde ahí quise hablarte más, conocerte más, quedarme un poco más cerca.",
+        "",
+        "Y después llegó el 28 de abril.",
+        "",
+        "Esa noche te hice creer que faltaba mucho, que necesitaba más tiempo, que todavía no era el momento. Pero la verdad era otra: yo ya tenía el corazón lleno de ti. Estaba nervioso porque nunca me había declarado así a alguien, nunca había sentido que una persona pudiera volver tan claro lo que antes parecía imposible de decir.",
+        "",
+        "Te di tu propia experiencia de ser mi mundo porque, sin saberlo del todo, ya lo eras. Y cuando lloraste, cuando seguiste llorando incluso después, entendí que esa noche no solo había empezado una relación. Había empezado una historia diferente.",
+        "",
+        "Nuestro primer mes también vive aquí. Esa noche en la que los dos lloramos bonito, como dos niños cuidando algo que apenas llevaba un mes y aun así ya se sentía enorme. Tú con tu carta, yo con mi forma rara de decir amor: un jueguito, una visión futura, una carta, un intento de poner en algún lugar todo lo que me provocas.",
+        "",
+        "También guardo nuestro primer momento difícil. No porque haya sido lindo, sino porque fue importante. Ahí aprendí a entenderte mejor, a mirar partes de ti que todavía no conocía, y a confirmar algo que vale mucho: incluso cuando pesa, lo nuestro no busca romperse. Busca aprender. Busca volver a encontrarse.",
+        "",
+        "Pienso también en esa noche que empezó con Ricardo, Roger, voleibol, equipos raros y risas, y terminó a las dos de la mañana con nosotros dos. Cuando me pediste una llamada aparte porque necesitabas estar solo con tu noviecito, me diste una de esas certezas pequeñas que se quedan para siempre: nuestros momentos a solas no son un extra. Son hogar.",
+        "",
+        "Me da ternura cuando dices \"¿Y qué tiene?\" queriendo provocarme. Me da risa que nosotros digamos \"10\" como si fuera una respuesta normal. Me gusta que nuestro amor tenga esas cosas chiquitas que, desde afuera, quizás nadie entiende, pero para nosotros dicen demasiado.",
+        "",
+        "Y si algún día dudas de ti, quiero que recuerdes esto: como te he mencionado, podrás sola, pero nunca lo estarás, porque yo estoy junto a ti.",
+        "",
+        "Desde el día en que sentí que mi alma y la tuya se unían, decidí entregarte mi corazón. Desde ahí, el mismo puede decir que nunca se sintió tan seguro y con tanta alegría, porque definitivamente, desde ese 28 de abril, me has llenado de vida.",
+        "",
+        "Gracias por ser Luisa. Gracias por ser mi niña, mi cielo, mi lugar tranquilo y mi emoción bonita.",
+        "",
+        "Feliz segundo mes.",
+        "",
+        "Ti amu, mi cielo.",
+        "",
+        "Tu niño.",
+        "",
+        "Lo demás, lo seguimos escribiendo."
+    ]
+}

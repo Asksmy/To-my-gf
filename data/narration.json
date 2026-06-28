@@ -1,0 +1,29 @@
+{
+    "universe": [
+        {
+            "id": "intro",
+            "text": "Mi amor, busca en este universo una luz que te lleve a recuerdos de nosotros.",
+            "duration": 8000
+        },
+        {
+            "id": "first_memory",
+            "text": "Hay recuerdos que no brillan por ser perfectos, sino porque ahí empezó a sentirse verdad.",
+            "duration": 8000
+        },
+        {
+            "id": "halfway",
+            "text": "No todo lo bonito fue fácil. Algunas estrellas existen porque aprendieron a quedarse.",
+            "duration": 8500
+        },
+        {
+            "id": "convergence",
+            "text": "Ya casi. Lo que parecía disperso está volviendo a su centro.",
+            "duration": 7500
+        },
+        {
+            "id": "final",
+            "text": "Este cielo no estaba lejos. Tenía su nombre desde el principio.",
+            "duration": 9000
+        }
+    ]
+}
