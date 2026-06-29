@@ -5,7 +5,7 @@
  * Emits soft circular waves and warm dust particles.
  */
 export default class Explosion {
-    constructor(x, y) {
+    constructor(x, y, options = {}) {
         this.x = x;
         this.y = y;
         this.particles = [];
@@ -13,10 +13,12 @@ export default class Explosion {
         this.active = true;
         this.age = 0;
         this.duration = 4000; // 4 seconds total duration
+        this.performanceMode = Boolean(options.performanceMode);
 
         // Generate warm dust particles
         const colors = ['#FFD79A', '#FFF5E8', '#FFB0B0', '#C8A2C8', '#FFD700'];
-        for (let i = 0; i < 200; i++) {
+        const particleCount = this.performanceMode ? 90 : 200;
+        for (let i = 0; i < particleCount; i++) {
             const angle = Math.random() * Math.PI * 2;
             const speed = 0.05 + Math.random() * 0.4;
             const radius = 1 + Math.random() * 4;

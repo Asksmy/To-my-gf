@@ -50,6 +50,11 @@ export default class SceneManager {
 
         // Time tracking
         this.lastTime = 0;
+        this.performanceMode = false;
+    }
+
+    setPerformanceMode(enabled) {
+        this.performanceMode = enabled;
     }
 
     init(canvas, ctx, memoriesData = []) {
@@ -59,7 +64,9 @@ export default class SceneManager {
         this.height = canvas.height;
 
         this.camera.onResize(this.width, this.height);
-        this.sky = new Sky(this.width, this.height, 2000);
+        this.sky = new Sky(this.width, this.height, this.performanceMode ? 850 : 2000, {
+            performanceMode: this.performanceMode
+        });
 
         this.mainStars = [
             new MainStar(-this.width * 0.25, 0, { coreColor: '#FAF9F6', glowColor: '#FFD79A', coreRadius: 3, glowRadius: 25, breathSpeed: 0.0003, phase: 0 }),
@@ -145,7 +152,9 @@ export default class SceneManager {
             const state = memoryStates[id];
             
             const screen = this.camera.worldToScreen(constData.worldX, constData.worldY, 1.0);
-            this.drawMemoryBeacon(constData, state, screen, time);
+            if (this.isScreenRelevant(screen, this.performanceMode ? 180 : 260)) {
+                this.drawMemoryBeacon(constData, state, screen, time);
+            }
 
             // Set constellation opacity based on progress or unlock state
             let targetOpacity = 0;
@@ -161,7 +170,9 @@ export default class SceneManager {
                 }
                 constData.graphics.setTargetOpacity(targetOpacity);
             }
-            constData.graphics.draw(this.ctx, this.camera, constData.worldX, constData.worldY, dt);
+            if (this.isScreenRelevant(screen, 160) || constData.graphics.opacity > 0.01) {
+                constData.graphics.draw(this.ctx, this.camera, constData.worldX, constData.worldY, dt);
+            }
         }
 
         if (this.isFinalSequence) {
@@ -201,6 +212,15 @@ export default class SceneManager {
         }
 
         this.drawHomeStar(time);
+    }
+
+    isScreenRelevant(screen, margin = 200) {
+        return (
+            screen.x > -margin &&
+            screen.x < this.width + margin &&
+            screen.y > -margin &&
+            screen.y < this.height + margin
+        );
     }
 
     drawConnectingThread(posA, posB, time) {
@@ -255,8 +275,9 @@ export default class SceneManager {
         const pulse = 0.5 + Math.sin(time * visual.pulse + constData.seed) * 0.5;
         const driftX = Math.cos(time * 0.00022 + constData.seed) * visual.drift;
         const driftY = Math.sin(time * 0.00018 + constData.seed) * visual.drift;
-        const radius = visual.aura + pulse * 28 + near * 28 + unlocked * 16;
-        const alpha = visual.alpha + pulse * 0.09 + near * 0.12 + unlocked * 0.04;
+        const mobileScale = this.performanceMode ? 0.72 : 1;
+        const radius = (visual.aura + pulse * 28 + near * 28 + unlocked * 16) * mobileScale;
+        const alpha = (visual.alpha + pulse * 0.09 + near * 0.12 + unlocked * 0.04) * (this.performanceMode ? 0.82 : 1);
 
         ctx.save();
         ctx.globalAlpha = alpha;
@@ -340,7 +361,7 @@ export default class SceneManager {
         const y = this.height / 2 + Math.sin(angle) * (this.height * 0.38);
         const visual = this.emotionVisuals[nearest.constData.emotion] || this.emotionVisuals.nostalgia;
         const pulse = 0.5 + Math.sin(time * 0.0008 + nearest.constData.seed) * 0.5;
-        const radius = 210 + pulse * 46;
+        const radius = this.performanceMode ? 150 + pulse * 28 : 210 + pulse * 46;
 
         this.ctx.save();
         this.ctx.globalAlpha = 0.16 + pulse * 0.13;
@@ -472,7 +493,7 @@ export default class SceneManager {
     // --- Cinematic Methods ---
 
     triggerExplosion() {
-        this.explosion = new Explosion(0, 0); // Origin at center
+        this.explosion = new Explosion(0, 0, { performanceMode: this.performanceMode }); // Origin at center
     }
 
     mergeMainStars() {
@@ -521,6 +542,10 @@ export default class SceneManager {
         this.isFinalSequence = true;
         this.heartPathProgress = 0;
         this.heartPathOpacity = 0;
+        if (this.performanceMode) {
+            this.camera.transitionTo(0, 90, 0.22, 0.018, 0.04);
+        }
+
         // The constellations are already positioned in a heart shape.
         // We will force them all to gradually appear and stay visible.
         const ids = Object.keys(this.constellations);
@@ -556,7 +581,7 @@ export default class SceneManager {
     drawMemoryHeartPath() {
         if (this.heartPathOpacity <= 0.001 || this.heartPathProgress <= 0.001) return;
 
-        const samples = 180;
+        const samples = this.performanceMode ? 96 : 180;
         const centerX = 0;
         const centerY = 60;
         const scaleX = 54;
@@ -613,7 +638,7 @@ export default class SceneManager {
             ctx.restore();
         };
 
-        drawStroke(4.5, 0.09, 24);
-        drawStroke(1.15, 0.34, 9);
+        drawStroke(4.5, 0.09, this.performanceMode ? 10 : 24);
+        drawStroke(1.15, 0.34, this.performanceMode ? 4 : 9);
     }
 }

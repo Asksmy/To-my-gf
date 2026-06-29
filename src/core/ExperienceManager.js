@@ -15,9 +15,11 @@ export default class ExperienceManager {
         this.audioManager = new AudioManager();
         
         this.canvas = document.getElementById('universe-canvas');
-        this.ctx = this.canvas.getContext('2d');
+        this.ctx = this.canvas.getContext('2d', { alpha: false });
         
         this.isRunning = false;
+        this.isMobilePerformanceMode = this._detectMobilePerformanceMode();
+        this.targetFrameMs = this.isMobilePerformanceMode ? 1000 / 45 : 0;
 
         this.startTime = 0;
         this.lastFrameTime = 0;
@@ -64,6 +66,7 @@ export default class ExperienceManager {
         this.onResize();
         
         // Pass memory data to SceneManager so it can build constellations
+        this.sceneManager.setPerformanceMode(this.isMobilePerformanceMode);
         this.sceneManager.init(this.canvas, this.ctx, memoryData);
         this.uiManager.setSecretHandler(() => {
             this.sceneManager.triggerHomeStar();
@@ -94,6 +97,12 @@ export default class ExperienceManager {
         this.sceneManager.onResize(this.canvas.width, this.canvas.height);
     }
 
+    _detectMobilePerformanceMode() {
+        const coarsePointer = window.matchMedia?.('(pointer: coarse)').matches;
+        const compactViewport = Math.min(window.innerWidth, window.innerHeight) <= 768;
+        return Boolean(coarsePointer || compactViewport);
+    }
+
     /**
      * Sets the emotion tint overlay based on the most recently unlocked memory's emotion.
      */
@@ -117,6 +126,11 @@ export default class ExperienceManager {
         if (!this.isRunning) return;
 
         const now = performance.now();
+        if (this.targetFrameMs && now - this.lastFrameTime < this.targetFrameMs) {
+            requestAnimationFrame(this.render.bind(this));
+            return;
+        }
+
         const time = now - this.startTime;
         const dt = now - this.lastFrameTime;
         this.lastFrameTime = now;
@@ -203,7 +217,9 @@ export default class ExperienceManager {
                     this.sceneManager.mergeMainStars();
 
                     // Camera pulls back slowly
-                    this.sceneManager.camera.transitionTo(0, 0, 0.35, 0.005, 0.002);
+                    const finalZoom = this.isMobilePerformanceMode ? 0.22 : 0.35;
+                    const finalZoomSpeed = this.isMobilePerformanceMode ? 0.025 : 0.01;
+                    this.sceneManager.camera.transitionTo(0, 0, finalZoom, 0.012, finalZoomSpeed);
                     
                     // Audio silence
                     if (this.audioManager) this.audioManager.fadeMusicVolume(0, 2);

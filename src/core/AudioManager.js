@@ -7,12 +7,14 @@
  */
 export default class AudioManager {
     constructor() {
+        const finalVoiceSource = this._getSupportedFinalVoiceSource();
+
         // Define the audio objects. We look for them in data/audio/
         this.tracks = {
             ambient: new Audio('./data/audio/ambient.mp3'),
             memory: new Audio('./data/audio/memory.mp3'),
             narrative: new Audio('./data/audio/narrative.mp3'),
-            finalVoice: new Audio('./data/audio/final-voice.ogg')
+            finalVoice: new Audio(finalVoiceSource)
         };
 
         // Ambient track should loop forever
@@ -48,6 +50,14 @@ export default class AudioManager {
         });
     }
 
+    _getSupportedFinalVoiceSource() {
+        const probe = document.createElement('audio');
+        if (probe.canPlayType('audio/mpeg')) {
+            return './data/audio/final-voice.mp3';
+        }
+        return './data/audio/final-voice.ogg';
+    }
+
     /**
      * Must be called inside a user interaction event (like click)
      * to unlock the browser's audio engine.
@@ -55,6 +65,12 @@ export default class AudioManager {
     async init() {
         if (this.initialized) return;
         this.initialized = true;
+        const ctx = this._ensureAudioContext();
+        if (ctx?.state === 'suspended') {
+            await ctx.resume();
+        }
+
+        await this._primeFinalVoiceForMobile();
 
         // Attempt to play ambient track, catching any errors if the file is missing
         try {
@@ -64,6 +80,20 @@ export default class AudioManager {
         } catch (e) {
             console.info("Using generated ambient audio fallback.");
             this._startGeneratedAmbient();
+        }
+    }
+
+    async _primeFinalVoiceForMobile() {
+        const track = this.tracks.finalVoice;
+        try {
+            track.muted = true;
+            track.volume = 0;
+            await track.play();
+            track.pause();
+            track.currentTime = 0;
+            track.muted = false;
+        } catch (e) {
+            track.muted = false;
         }
     }
 
@@ -382,6 +412,7 @@ export default class AudioManager {
 
         try {
             const track = this.tracks.finalVoice;
+            track.muted = false;
             track.currentTime = 0;
             track.volume = 0;
             this.volumes.finalVoice.current = 0;

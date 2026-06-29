@@ -13,11 +13,13 @@ export default class Sky {
      * @param {number} viewportHeight
      * @param {number} starCount - Total number of ambient stars
      */
-    constructor(viewportWidth, viewportHeight, starCount = 600) {
+    constructor(viewportWidth, viewportHeight, starCount = 600, options = {}) {
         this.stars = [];
         this.shootingStars = [];
         this.viewportWidth = viewportWidth;
         this.viewportHeight = viewportHeight;
+        this.performanceMode = Boolean(options.performanceMode);
+        this.dustCount = this.performanceMode ? 42 : 120;
 
         // The world extends far beyond the viewport so exploration
         // never reveals an empty edge. Matches the memory spread.
@@ -145,7 +147,9 @@ export default class Sky {
         // --- Shooting Stars ---
         if (this.meteorShowerActive) {
             // Intense shower: allow up to 15, high spawn rate
-            if (this.shootingStars.length < 15 && Math.random() < 0.05) {
+            const showerLimit = this.performanceMode ? 8 : 15;
+            const showerChance = this.performanceMode ? 0.03 : 0.05;
+            if (this.shootingStars.length < showerLimit && Math.random() < showerChance) {
                 this._spawnShootingStar(camera);
             }
         } else {
@@ -179,7 +183,7 @@ export default class Sky {
         ctx.fillStyle = ambient;
         ctx.fillRect(0, 0, this.viewportWidth, this.viewportHeight);
 
-        for (let i = 0; i < 120; i++) {
+        for (let i = 0; i < this.dustCount; i++) {
             const seed = i * 97.13;
             const x = (Math.sin(seed) * 0.5 + 0.5) * this.viewportWidth;
             const y = (Math.cos(seed * 1.7) * 0.5 + 0.5) * this.viewportHeight;
